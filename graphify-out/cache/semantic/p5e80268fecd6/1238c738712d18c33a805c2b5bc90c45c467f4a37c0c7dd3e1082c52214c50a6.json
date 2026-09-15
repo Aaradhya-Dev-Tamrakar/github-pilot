@@ -1,1 +1,0 @@
-{"nodes": [{"id": "headless_orchestration_substrate", "label": "Headless Orchestration Substrate", "file_type": "concept", "source_file": "research/architectures/ARCH-SPEC-003-HEADLESS-ORCHESTRATION-SUBSTRATE.md", "rationale": "Decoupled verification engine and CLI-first operational lifecycle to avoid premature front-end coupling."}], "edges": [], "hyperedges": []}
