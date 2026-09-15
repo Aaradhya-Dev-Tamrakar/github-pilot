@@ -1,0 +1,53 @@
+name: GitHub Pilot Daily Profile Sync
+
+on:
+  schedule:
+    # Runs every day at 00:00 UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-telemetry:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout GitHub Pilot Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install 3.12
+
+      - name: Install Dependencies
+        run: |
+          uv venv
+          uv pip install -r requirements.txt
+
+      - name: Synthesize Profile Telemetry & SVG Radar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ORGS: "Aaradhya-Dev-Tamrakar"
+          GITHUB_USERS: "AaradhyaDT"
+        run: |
+          uv run pilot profile --output ./assets/PROFILE_README.md --svg ./assets/radar.svg
+
+      - name: Commit & Push Synthesized Assets
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add assets/
+          if git diff --staged --quiet; then
+            echo "No telemetry changes detected."
+          else
+            git commit -m "chore(telemetry): automated daily ecosystem radar update [skip ci]"
+            git push origin main
+          fi

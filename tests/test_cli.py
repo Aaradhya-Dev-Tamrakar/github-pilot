@@ -11,7 +11,7 @@ def test_cli_help():
 def test_cli_status():
     result = runner.invoke(app, ["status"])
     assert result.exit_code == 0
-    assert "Account Configuration" in result.output
+    assert "Target Fleet Configuration" in result.output
 
 def test_cli_scrape_help():
     result = runner.invoke(app, ["scrape", "--help"])

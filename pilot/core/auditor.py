@@ -3,11 +3,12 @@ import asyncio
 from typing import List, Dict, Any, Optional
 from pydantic import BaseModel, Field
 import httpx
-from pilot.config import get_config, AccountConfig
+from pilot.config import get_config, PilotConfig
 
 class RepoAuditResult(BaseModel):
     name: str
     owner: str
+    full_name: str
     is_private: bool
     description: Optional[str] = None
     language: Optional[str] = None
@@ -21,6 +22,7 @@ class RepoAuditResult(BaseModel):
     has_topics: bool = False
     health_score: int = 0
     anomalies: List[str] = Field(default_factory=list)
+    ci_status: Optional[str] = None
 
 
 class FleetAuditSummary(BaseModel):
@@ -33,73 +35,95 @@ class FleetAuditSummary(BaseModel):
 
 
 class FleetAuditor:
-    def __init__(self, config=None):
+    def __init__(self, config: Optional[PilotConfig] = None):
         self.config = config or get_config()
 
-    async def audit_account(self, account: AccountConfig, max_repos: int = 50) -> List[RepoAuditResult]:
-        url = f"https://api.github.com/users/{account.username}/repos?per_page={max_repos}&sort=updated"
-        headers = account.get_auth_headers()
-        results: List[RepoAuditResult] = []
+    def _parse_repo_payload(self, r: Dict[str, Any]) -> RepoAuditResult:
+        license_obj = r.get("license") or {}
+        license_key = license_obj.get("spdx_id") or license_obj.get("key")
+        topics = r.get("topics", [])
+        has_desc = bool(r.get("description"))
+        has_lic = bool(license_key and license_key.upper() != "NONE")
+        has_top = bool(topics and len(topics) > 0)
 
-        async with httpx.AsyncClient(timeout=15.0) as client:
-            try:
-                response = await client.get(url, headers=headers)
-                if response.status_code != 200:
-                    return results
+        owner_login = r.get("owner", {}).get("login", "unknown")
+        repo_name = r.get("name", "unknown")
 
-                repos_data = response.json()
-                for r in repos_data:
-                    license_obj = r.get("license") or {}
-                    license_key = license_obj.get("spdx_id") or license_obj.get("key")
-                    topics = r.get("topics", [])
-                    has_desc = bool(r.get("description"))
-                    has_lic = bool(license_key and license_key.upper() != "NONE")
-                    has_top = bool(topics and len(topics) > 0)
+        anomalies = []
+        score = 100
+        if not has_desc:
+            anomalies.append("Missing description")
+            score -= 25
+        if not has_lic:
+            anomalies.append("Missing license")
+            score -= 30
+        if not has_top:
+            anomalies.append("No topics configured")
+            score -= 20
+        if r.get("open_issues_count", 0) > 10:
+            anomalies.append(f"High open issue count ({r.get('open_issues_count')})")
+            score -= 10
 
-                    anomalies = []
-                    score = 100
-                    if not has_desc:
-                        anomalies.append("Missing description")
-                        score -= 25
-                    if not has_lic:
-                        anomalies.append("Missing license")
-                        score -= 30
-                    if not has_top:
-                        anomalies.append("No topics configured")
-                        score -= 20
-                    if r.get("open_issues_count", 0) > 10:
-                        anomalies.append(f"High open issue count ({r.get('open_issues_count')})")
-                        score -= 10
+        return RepoAuditResult(
+            name=repo_name,
+            owner=owner_login,
+            full_name=r.get("full_name", f"{owner_login}/{repo_name}"),
+            is_private=r.get("private", False),
+            description=r.get("description"),
+            language=r.get("language"),
+            license_key=license_key,
+            stars=r.get("stargazers_count", 0),
+            forks=r.get("forks_count", 0),
+            open_issues=r.get("open_issues_count", 0),
+            topics=topics,
+            has_description=has_desc,
+            has_license=has_lic,
+            has_topics=has_top,
+            health_score=max(0, score),
+            anomalies=anomalies
+        )
 
-                    results.append(
-                        RepoAuditResult(
-                            name=r.get("name", "unknown"),
-                            owner=account.username,
-                            is_private=r.get("private", False),
-                            description=r.get("description"),
-                            language=r.get("language"),
-                            license_key=license_key,
-                            stars=r.get("stargazers_count", 0),
-                            forks=r.get("forks_count", 0),
-                            open_issues=r.get("open_issues_count", 0),
-                            topics=topics,
-                            has_description=has_desc,
-                            has_license=has_lic,
-                            has_topics=has_top,
-                            health_score=max(0, score),
-                            anomalies=anomalies
-                        )
-                    )
-            except Exception as e:
-                pass
+    async def audit_fleet(self, max_repos: int = 100) -> FleetAuditSummary:
+        headers = self.config.get_auth_headers()
+        seen_repos: Dict[str, RepoAuditResult] = {}
 
-        return results
+        async with httpx.AsyncClient(timeout=20.0, headers=headers) as client:
+            if self.config.has_auth:
+                # Authenticated scan: fetch personal and organization member repos
+                try:
+                    url = f"https://api.github.com/user/repos?per_page={max_repos}&sort=updated&affiliation=owner,organization_member"
+                    resp = await client.get(url)
+                    if resp.status_code == 200:
+                        for item in resp.json():
+                            res = self._parse_repo_payload(item)
+                            seen_repos[res.full_name] = res
+                except Exception:
+                    pass
 
-    async def audit_fleet(self) -> FleetAuditSummary:
-        results_primary = await self.audit_account(self.config.primary_account)
-        results_secondary = await self.audit_account(self.config.secondary_account)
+            # Also fetch org and user targets if needed (or fallback if unauthenticated)
+            for org in self.config.orgs:
+                try:
+                    url = f"https://api.github.com/orgs/{org}/repos?per_page={max_repos}&sort=updated"
+                    resp = await client.get(url)
+                    if resp.status_code == 200:
+                        for item in resp.json():
+                            res = self._parse_repo_payload(item)
+                            seen_repos[res.full_name] = res
+                except Exception:
+                    pass
 
-        all_repos = results_primary + results_secondary
+            for user in self.config.users:
+                try:
+                    url = f"https://api.github.com/users/{user}/repos?per_page={max_repos}&sort=updated"
+                    resp = await client.get(url)
+                    if resp.status_code == 200:
+                        for item in resp.json():
+                            res = self._parse_repo_payload(item)
+                            seen_repos[res.full_name] = res
+                except Exception:
+                    pass
+
+        all_repos = list(seen_repos.values())
         total_scanned = len(all_repos)
         if total_scanned == 0:
             return FleetAuditSummary()

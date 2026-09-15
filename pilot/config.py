@@ -1,15 +1,41 @@
 import os
 from pathlib import Path
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 
 # Automatically load local .env if present
 load_dotenv()
 
-class AccountConfig(BaseModel):
-    username: str
-    token: Optional[str] = None
+class PilotConfig(BaseModel):
+    # Primary authentication token (works across personal repos and organizations)
+    token: Optional[str] = Field(
+        default_factory=lambda: os.getenv("GITHUB_TOKEN") or os.getenv("GITHUB_PRIMARY_TOKEN")
+    )
+    # Target Organizations to monitor
+    orgs: List[str] = Field(
+        default_factory=lambda: [
+            o.strip() for o in os.getenv("GITHUB_ORGS", "Aaradhya-Dev-Tamrakar").split(",") if o.strip()
+        ]
+    )
+    # Target Personal Users to monitor
+    users: List[str] = Field(
+        default_factory=lambda: [
+            u.strip() for u in os.getenv("GITHUB_USERS", "AaradhyaDT").split(",") if u.strip()
+        ]
+    )
+    cache_dir: Path = Field(
+        default_factory=lambda: Path(os.getenv("PILOT_CACHE_DIR", ".cache/pilot"))
+    )
+    cache_ttl_seconds: int = Field(
+        default_factory=lambda: int(os.getenv("PILOT_CACHE_TTL_SECONDS", "21600"))
+    )
+    scraper_user_agent: str = Field(
+        default_factory=lambda: os.getenv(
+            "PILOT_SCRAPER_USER_AGENT",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
+        )
+    )
 
     @property
     def has_auth(self) -> bool:
@@ -24,33 +50,6 @@ class AccountConfig(BaseModel):
         if self.token:
             headers["Authorization"] = f"Bearer {self.token.strip()}"
         return headers
-
-
-class PilotConfig(BaseModel):
-    primary_account: AccountConfig = Field(
-        default_factory=lambda: AccountConfig(
-            username=os.getenv("GITHUB_PRIMARY_USER", "Aaradhya-Dev-Tamrakar"),
-            token=os.getenv("GITHUB_PRIMARY_TOKEN")
-        )
-    )
-    secondary_account: AccountConfig = Field(
-        default_factory=lambda: AccountConfig(
-            username=os.getenv("GITHUB_SECONDARY_USER", "AaradhyaDT"),
-            token=os.getenv("GITHUB_SECONDARY_TOKEN")
-        )
-    )
-    cache_dir: Path = Field(
-        default_factory=lambda: Path(os.getenv("PILOT_CACHE_DIR", ".cache/pilot"))
-    )
-    cache_ttl_seconds: int = Field(
-        default_factory=lambda: int(os.getenv("PILOT_CACHE_TTL_SECONDS", "21600"))
-    )
-    scraper_user_agent: str = Field(
-        default_factory=lambda: os.getenv(
-            "PILOT_SCRAPER_USER_AGENT",
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
-        )
-    )
 
     def ensure_cache_dirs(self) -> None:
         self.cache_dir.mkdir(parents=True, exist_ok=True)

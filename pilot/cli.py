@@ -29,16 +29,18 @@ def status():
     config = get_config()
     console.print(Panel(f"[bold cyan]GitHub Pilot v{__version__}[/bold cyan] — Token-Zero Core", expand=False))
     
-    table = Table(title="Account Configuration", show_header=True, header_style="bold magenta")
-    table.add_column("Account Role", style="dim")
-    table.add_column("Username", style="bold green")
+    table = Table(title="Target Fleet Configuration", show_header=True, header_style="bold magenta")
+    table.add_column("Type", style="dim")
+    table.add_column("Identifier", style="bold green")
     table.add_column("Auth Status")
 
-    p_auth = "[green]Authenticated (Token Set)[/green]" if config.primary_account.has_auth else "[yellow]Unauthenticated (Public Fallback)[/yellow]"
-    s_auth = "[green]Authenticated (Token Set)[/green]" if config.secondary_account.has_auth else "[yellow]Unauthenticated (Public Fallback)[/yellow]"
-    
-    table.add_row("Primary", config.primary_account.username, p_auth)
-    table.add_row("Secondary", config.secondary_account.username, s_auth)
+    auth_label = "[green]Authenticated (Personal PAT)[/green]" if config.has_auth else "[yellow]Unauthenticated (Public Fallback)[/yellow]"
+
+    for org in config.orgs:
+        table.add_row("Organization", org, auth_label)
+    for u in config.users:
+        table.add_row("Personal User", u, auth_label)
+
     console.print(table)
 
     console.print(f"\n[bold]Local Cache Directory:[/bold] {config.cache_dir.resolve()}")
@@ -109,11 +111,7 @@ def profile(
         console.print("\n" + readme_md)
 
     if svg_output:
-        svg_code = synthesizer.generate_svg_radar({
-            "repos": summary.total_repos_scanned,
-            "stars": summary.total_stars,
-            "health_score": int(summary.average_health_score)
-        })
+        svg_code = synthesizer.generate_svg_radar(summary)
         svg_output.parent.mkdir(parents=True, exist_ok=True)
         svg_output.write_text(svg_code, encoding="utf-8")
         console.print(f"[green]SVG Radar written to {svg_output}[/green]")
