@@ -11,7 +11,7 @@
     </linearGradient>
     <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#6366f1"/>
-      <stop offset="100%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
     </linearGradient>
     <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
       <feGaussianBlur stdDeviation="6" result="blur"/>
@@ -32,29 +32,29 @@
   <!-- Metrics Grid -->
   <g transform="translate(28, 68)">
     <!-- Metric 1: Repos -->
-    <text x="0" y="18" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="24" font-weight="800">0</text>
+    <text x="0" y="18" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="24" font-weight="800">64</text>
     <text x="0" y="34" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11" font-weight="500">FLEET REPOSITORIES</text>
 
     <!-- Metric 2: Stars -->
-    <text x="150" y="18" fill="#facc15" font-family="system-ui, sans-serif" font-size="24" font-weight="800">⭐ 0</text>
+    <text x="150" y="18" fill="#facc15" font-family="system-ui, sans-serif" font-size="24" font-weight="800">⭐ 16</text>
     <text x="150" y="34" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11" font-weight="500">COMMUNITY STARS</text>
 
     <!-- Metric 3: Forks -->
-    <text x="290" y="18" fill="#a855f7" font-family="system-ui, sans-serif" font-size="24" font-weight="800">🍴 0</text>
+    <text x="290" y="18" fill="#a855f7" font-family="system-ui, sans-serif" font-size="24" font-weight="800">🍴 3</text>
     <text x="290" y="34" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11" font-weight="500">ECOSYSTEM FORKS</text>
   </g>
 
   <!-- Languages Ribbon -->
   <g transform="translate(28, 142)">
     <rect width="440" height="28" rx="6" fill="#1e293b" fill-opacity="0.6"/>
-    <text x="12" y="18" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11" font-weight="500">⚡ Core Stacks: <tspan fill="#38bdf8">Python • C++ • C# • Kotlin</tspan></text>
+    <text x="12" y="18" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11" font-weight="500">⚡ Core Stacks: <tspan fill="#38bdf8">HTML (16) • Jupyter Notebook (15) • Python (12) • JavaScript (1)</tspan></text>
   </g>
 
   <!-- Health Ring Meter -->
   <g transform="translate(560, 95)">
     <circle cx="0" cy="0" r="36" stroke="#1e293b" stroke-width="8" fill="none"/>
-    <circle cx="0" cy="0" r="36" stroke="url(#ringGrad)" stroke-width="8" stroke-dasharray="226" stroke-dashoffset="226" stroke-linecap="round" fill="none" transform="rotate(-90)" filter="url(#glow)"/>
-    <text x="0" y="6" text-anchor="middle" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="16" font-weight="800">0%</text>
+    <circle cx="0" cy="0" r="36" stroke="url(#ringGrad)" stroke-width="8" stroke-dasharray="226" stroke-dashoffset="103" stroke-linecap="round" fill="none" transform="rotate(-90)" filter="url(#glow)"/>
+    <text x="0" y="6" text-anchor="middle" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="16" font-weight="800">54%</text>
     <text x="0" y="48" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10" font-weight="600">HEALTH SCORE</text>
   </g>
 </svg>
