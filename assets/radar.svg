@@ -32,7 +32,7 @@
   <!-- Metrics Grid -->
   <g transform="translate(28, 68)">
     <!-- Metric 1: Repos -->
-    <text x="0" y="18" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="24" font-weight="800">75</text>
+    <text x="0" y="18" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="24" font-weight="800">78</text>
     <text x="0" y="34" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11" font-weight="500">FLEET REPOSITORIES</text>
 
     <!-- Metric 2: Stars -->
@@ -47,7 +47,7 @@
   <!-- Languages Ribbon -->
   <g transform="translate(28, 142)">
     <rect width="440" height="28" rx="6" fill="#1e293b" fill-opacity="0.6"/>
-    <text x="12" y="18" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11" font-weight="500">⚡ Core Stacks: <tspan fill="#38bdf8">Python (25) • Jupyter Notebook (15) • HTML (14) • TypeScript (1)</tspan></text>
+    <text x="12" y="18" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11" font-weight="500">⚡ Core Stacks: <tspan fill="#38bdf8">Python (25) • Jupyter Notebook (15) • HTML (14) • PowerShell (3)</tspan></text>
   </g>
 
   <!-- Health Ring Meter -->
