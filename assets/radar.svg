@@ -47,14 +47,14 @@
   <!-- Languages Ribbon -->
   <g transform="translate(28, 142)">
     <rect width="440" height="28" rx="6" fill="#1e293b" fill-opacity="0.6"/>
-    <text x="12" y="18" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11" font-weight="500">⚡ Core Stacks: <tspan fill="#38bdf8">Python (25) • Jupyter Notebook (15) • HTML (14) • PowerShell (3)</tspan></text>
+    <text x="12" y="18" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11" font-weight="500">⚡ Core Stacks: <tspan fill="#38bdf8">Python (25) • Jupyter Notebook (15) • HTML (14) • PowerShell (4)</tspan></text>
   </g>
 
   <!-- Health Ring Meter -->
   <g transform="translate(560, 95)">
     <circle cx="0" cy="0" r="36" stroke="#1e293b" stroke-width="8" fill="none"/>
-    <circle cx="0" cy="0" r="36" stroke="url(#ringGrad)" stroke-width="8" stroke-dasharray="226" stroke-dashoffset="85" stroke-linecap="round" fill="none" transform="rotate(-90)" filter="url(#glow)"/>
-    <text x="0" y="6" text-anchor="middle" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="16" font-weight="800">62%</text>
+    <circle cx="0" cy="0" r="36" stroke="url(#ringGrad)" stroke-width="8" stroke-dasharray="226" stroke-dashoffset="81" stroke-linecap="round" fill="none" transform="rotate(-90)" filter="url(#glow)"/>
+    <text x="0" y="6" text-anchor="middle" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="16" font-weight="800">64%</text>
     <text x="0" y="48" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10" font-weight="600">HEALTH SCORE</text>
   </g>
 </svg>
