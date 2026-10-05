@@ -24,8 +24,8 @@
 | **[AaradhyaDT.github.io](https://github.com/AaradhyaDT/AaradhyaDT.github.io)** | `HTML` | ⭐ 1 | 🟢 100% | Living systems engineering portfolio & interactive 3D knowledge graph with client-side WebCrypto AES-256-GCM encryption |
 | **[BiasAperture](https://github.com/AaradhyaDT/BiasAperture)** | `Python` | ⭐ 1 | 🟢 100% | Demographic vision fairness & bias audit across 126 intersectional bins with BCa bootstrap confidence intervals |
 | **[SPARK](https://github.com/AaradhyaDT/SPARK)** | `Jupyter Notebook` | ⭐ 1 | 🟢 100% | Embedded INT8 Edge AI fall detection wearable on ESP32-S3 (18.5 KB quantized CNN, 0.9185 AUC-ROC, 200 Hz FreeRTOS ISR) |
+| **[rhino-mcp](https://github.com/Aaradhya-Dev-Tamrakar/rhino-mcp)** | `Python` | ⭐ 1 | 🟢 80% | Universal Model Context Protocol (MCP) Bridge for Rhinoceros 3D & Grasshopper Parametric Architecture |
 | **[Aaradhya-Dev-Tamrakar-2.github.io](https://github.com/Aaradhya-Dev-Tamrakar/Aaradhya-Dev-Tamrakar-2.github.io)** | `HTML` | ⭐ 1 | 🟢 80% | Portfolio |
-| **[stability-ai-system](https://github.com/AaradhyaDT/stability-ai-system)** | `Python` | ⭐ 1 | 🟡 70% | Edge AI Stability Detection System using RandomForest and FastAPI |
 
 ---
 
