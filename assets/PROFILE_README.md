@@ -18,7 +18,7 @@
 
 | Repository | Tech Stack | Stars | Health | Focus & Architecture |
 | :--- | :--- | :--- | :--- | :--- |
-| **[brainstorm](https://github.com/Aaradhya-Dev-Tamrakar/brainstorm)** | `HTML` | ⭐ 3 | 🟢 80% | Evidence-backed infrastructure for orchestrating, synchronizing, verifying, and experimentally evaluating a multi-tool engineering ecosystem. |
+| **[brainstorm](https://github.com/Aaradhya-Dev-Tamrakar/brainstorm)** | `Python` | ⭐ 3 | 🟢 80% | Evidence-backed infrastructure for orchestrating, synchronizing, verifying, and experimentally evaluating a multi-tool engineering ecosystem. |
 | **[Gesture-Controlled-Self-Balancing-Robot](https://github.com/AaradhyaDT/Gesture-Controlled-Self-Balancing-Robot)** | `C++` | ⭐ 2 | 🟢 100% | Two-wheeled balancing robot with real-time PID control, MPU-6050, MediaPipe vision teleoperation & DRV8825 stepper drivers |
 | **[crypto_arithmetic_solver](https://github.com/AaradhyaDT/crypto_arithmetic_solver)** | `Python` | ⭐ 2 | 🔴 25% | High-agency autonomous module |
 | **[AaradhyaDT.github.io](https://github.com/AaradhyaDT/AaradhyaDT.github.io)** | `HTML` | ⭐ 1 | 🟢 100% | Living systems engineering portfolio & interactive 3D knowledge graph with client-side WebCrypto AES-256-GCM encryption |

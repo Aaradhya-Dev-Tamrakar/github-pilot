@@ -47,7 +47,7 @@
   <!-- Languages Ribbon -->
   <g transform="translate(28, 142)">
     <rect width="440" height="28" rx="6" fill="#1e293b" fill-opacity="0.6"/>
-    <text x="12" y="18" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11" font-weight="500">⚡ Core Stacks: <tspan fill="#38bdf8">Python (30) • Jupyter Notebook (15) • HTML (13) • PowerShell (6)</tspan></text>
+    <text x="12" y="18" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11" font-weight="500">⚡ Core Stacks: <tspan fill="#38bdf8">Python (31) • Jupyter Notebook (15) • HTML (12) • PowerShell (6)</tspan></text>
   </g>
 
   <!-- Health Ring Meter -->
