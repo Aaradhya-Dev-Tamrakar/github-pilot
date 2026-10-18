@@ -32,7 +32,7 @@
   <!-- Metrics Grid -->
   <g transform="translate(28, 68)">
     <!-- Metric 1: Repos -->
-    <text x="0" y="18" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="24" font-weight="800">88</text>
+    <text x="0" y="18" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="24" font-weight="800">89</text>
     <text x="0" y="34" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11" font-weight="500">FLEET REPOSITORIES</text>
 
     <!-- Metric 2: Stars -->
